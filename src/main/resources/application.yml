@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    include:
+      - database
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile: product
+logging:
+  level:
+    org.hibernate.SQL: error
