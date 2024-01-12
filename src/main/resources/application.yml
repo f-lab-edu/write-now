@@ -4,9 +4,14 @@ spring:
       - database
 logging:
   level:
-    org.hibernate.SQL: debug
-    org.hibernate.type: trace
+    root: ERROR
+    org.springframework.security: DEBUG
+    org.springframework.web.client: DEBUG
+    org.hibernate.SQL: ERROR
 
+jwt:
+  issuer: test@test.com
+  secret_key: MFswDQYJKoZIhvcNAQEBBQADSgAwRwJAcFvaLSkWsphMsoBYkSGImf
 ---
 spring:
   config:
@@ -14,4 +19,10 @@ spring:
       on-profile: product
 logging:
   level:
-    org.hibernate.SQL: error
+    root: error
+    org.springframework.security: DEBUG
+    org.springframework.web.client: DEBUG
+    org.hibernate.SQL: ERROR
+jwt:
+  issuer: {JWT_ISSUER}
+  secret_key: {JWT_SECRET_KEY}
