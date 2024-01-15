@@ -42,6 +42,9 @@ jobs:
           ssh-private-key: ${{ secrets.WRITE_NOW_SSH_SECRET }}
       - name: SCP transfer
         run: scp -p 6666 *.jar root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
+      - name: Add remote server to known hosts
+        run: |
+          ssh-keyscan ${{ secrets.WRITE_NOW_SERVER_IP }} >> ~/.ssh/known_hosts
       - name: Execute remote commands
         run: |
           ssh root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_URL=${{secrets.WRITE_NOW_DATABASE_URL}}"
