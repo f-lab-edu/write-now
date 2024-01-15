@@ -43,7 +43,7 @@ jobs:
       - name: Add remote server to known hosts
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p 6666 ${{ secrets.WRITE_NOW_SERVER_IP }} >> ~/.ssh/known_hosts
+          ssh-keyscan -T 240 -p 6666 ${{ secrets.WRITE_NOW_SERVER_IP }} >> ~/.ssh/known_hosts
       - name: SCP transfer
         run: scp -P 6666 *.jar root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
       - name: Execute remote commands
