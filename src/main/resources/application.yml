@@ -12,6 +12,8 @@ logging:
 jwt:
   issuer: test@test.com
   secret_key: MFswDQYJKoZIhvcNAQEBBQADSgAwRwJAcFvaLSkWsphMsoBYkSGImf
+
+frontDomain: http://localhost:3000
 ---
 spring:
   config:
@@ -24,5 +26,5 @@ logging:
     org.springframework.web.client: DEBUG
     org.hibernate.SQL: ERROR
 jwt:
-  issuer: {JWT_ISSUER}
-  secret_key: {JWT_SECRET_KEY}
+  issuer: { JWT_ISSUER }
+  secret_key: { JWT_SECRET_KEY }
