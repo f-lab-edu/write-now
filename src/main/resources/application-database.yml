@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${DEFAULT_DATABASE_URL}
-    username: ${DEFAULT_DATABASE_USERNAME}
-    password: ${DEFAULT_DATABASE_PASSWORD}
+    url: jdbc:mysql://localhost:3306/write-now?charset=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: dustn@@0317
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     # database-platform: kr.co.apexsoft.gradnet2.entity._config.MysqlCustomDialect
