@@ -1,0 +1,47 @@
+name: Java CI/CD with Gradle
+
+on:
+  push:
+    branches: [ "master" ]
+  
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25 # v2.6.0
+      with:
+        arguments: clean build
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: write-now-jar
+        path: build/libs/*.jar
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: write-now-jar
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.4
+        with:
+          ssh-private-key: ${{ secrets.WRITE_NOW_SSH_SECRET }}
+      - name: SCP transfer
+        run: scp *.jar root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
+      - name: Execute remote commands
+        run: |
+          ssh root@${{ secrets.WRITE_NOW_SERVER_IP }} "sudo sh /deploy/test.sh"
