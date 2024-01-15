@@ -40,11 +40,11 @@ jobs:
         uses: webfactory/ssh-agent@v0.5.4
         with:
           ssh-private-key: ${{ secrets.WRITE_NOW_SSH_SECRET }}
-      - name: SCP transfer
-        run: scp -P 6666 *.jar root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
       - name: Add remote server to known hosts
         run: |
           ssh-keyscan -p 6666 ${{ secrets.WRITE_NOW_SERVER_IP }} >> ~/.ssh/known_hosts
+      - name: SCP transfer
+        run: scp -P 6666 *.jar root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
       - name: Execute remote commands
         run: |
           ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_URL=${{secrets.WRITE_NOW_DATABASE_URL}}"
