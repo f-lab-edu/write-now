@@ -48,12 +48,9 @@ jobs:
         run: scp -P 6666 *.jar root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
       - name: Create .env file And Transfer
         run: |
-          echo "$WRITE_NOW_DATABASE_YML" >> application-database.yml
-          echo "$WRITE_NOW_YML" >> application.yml
-          scp -P 6666 application-database.yml root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy/config
-          scp -P 6666 application.yml root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy/config
+          echo "$WRITE_NOW_YML" >> application-product.yml
+          scp -P 6666 application-product.yml root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy/config
         env:
-          WRITE_NOW_DATABASE_YML: ${{ secrets.WRITE_NOW_DATABASE_YML }}
           WRITE_NOW_YML: ${{ secrets.WRITE_NOW_YML }}
       - name: Execute remote commands
         run: |
