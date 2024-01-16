@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: ${PRODUCT_DATABASE_URL}
+    username: ${PRODUCT_DATABASE_USERNAME}
+    password: ${PRODUCT_DATABASE_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties.hibernate:
+      show_sql: false
+      format_sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+logging:
+  level:
+    root: ERROR
+    org.springframework.security: DEBUG
+    org.springframework.web.client: DEBUG
+    org.hibernate.SQL: ERROR
+
+jwt:
+  issuer: ${JWT_ISSUER}
+  secret_key: ${JWT_SECRET_KEY}
+
+frontDomain: http://localhost:3000
