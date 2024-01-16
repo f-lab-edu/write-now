@@ -48,9 +48,15 @@ jobs:
         run: scp -P 6666 *.jar root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
       - name: Execute remote commands
         run: |
-          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_URL=${{secrets.WRITE_NOW_DATABASE_URL}}"
-          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_USERNAME=${{secrets.WRITE_NOW_DATABASE_USERNAME}}"
-          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_PASSWORD=${{secrets.WRITE_NOW_DATABASE_PASSWORD}}"
-          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export JWT_ISSUER=${{secrets.WRITE_NOW_JWT_ISSUER}}"
-          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export JWT_SECRET_KEY=${{secrets.WRITE_NOW_JWT_SECRET}}"
+          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_URL=$WRITE_NOW_DATABASE_URL"
+          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_USERNAME=$WRITE_NOW_DATABASE_USERNAME"
+          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export PRODUCT_DATABASE_PASSWORD=$WRITE_NOW_DATABASE_PASSWORD"
+          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export JWT_ISSUER=$WRITE_NOW_JWT_ISSUER"
+          ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "export JWT_SECRET_KEY=$WRITE_NOW_JWT_SECRET"
           ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "sudo sh /deploy/test.sh"
+        env:
+          WRITE_NOW_DATABASE_URL: ${{secrets.WIRTE_NOW_DATABASE_URL}}
+          WRITE_NOW_DATABASE_USERNAME: ${{secrets.WIRTE_NOW_DATABASE_USERNAME}}
+          WRITE_NOW_DATABASE_PASSWORD: ${{secrets.WIRTE_NOW_DATABASE_PASSWORD}}
+          WRITE_NOW_JWT_ISSUER: ${{secrets.WIRTE_NOW_JWT_ISSUER}}
+          WRITE_NOW_JWT_SECRET: ${{secrets.WIRTE_NOW_JWT_SECRET}}
