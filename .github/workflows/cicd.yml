@@ -53,7 +53,7 @@ jobs:
           echo "PRODUCT_DATABASE_PASSWORD=$WRITE_NOW_DATABASE_PASSWORD" >> .env
           echo "JWT_ISSUER=$WRITE_NOW_JWT_ISSUER" >> .env
           echo "JWT_SECRET_KEY=$WRITE_NOW_JWT_SECRET" >> .env
-          scp -P 6666 .env root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
+          scp -P 6666 .env root@${{ secrets.WRITE_NOW_SERVER_IP }}:/
         env:
           WRITE_NOW_DATABASE_URL: ${{ secrets.WRITE_NOW_DATABASE_URL }}
           WRITE_NOW_DATABASE_USERNAME: ${{ secrets.WRITE_NOW_DATABASE_USERNAME }}
