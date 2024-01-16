@@ -48,18 +48,13 @@ jobs:
         run: scp -P 6666 *.jar root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
       - name: Create .env file And Transfer
         run: |
-          echo "PRODUCT_DATABASE_URL=$WRITE_NOW_DATABASE_URL" >> .env
-          echo "PRODUCT_DATABASE_USERNAME=$WRITE_NOW_DATABASE_USERNAME" >> .env
-          echo "PRODUCT_DATABASE_PASSWORD=$WRITE_NOW_DATABASE_PASSWORD" >> .env
-          echo "JWT_ISSUER=$WRITE_NOW_JWT_ISSUER" >> .env
-          echo "JWT_SECRET_KEY=$WRITE_NOW_JWT_SECRET" >> .env
-          scp -P 6666 .env root@${{ secrets.WRITE_NOW_SERVER_IP }}:/
+          echo "$WRITE_NOW_DATABASE_YML" >> application-database.yml
+          echo "$WRITE_NOW_YML" >> application.yml
+          scp -P 6666 application-database.yml root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy/config
+          scp -P 6666 application.yml root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy/config
         env:
-          WRITE_NOW_DATABASE_URL: ${{ secrets.WRITE_NOW_DATABASE_URL }}
-          WRITE_NOW_DATABASE_USERNAME: ${{ secrets.WRITE_NOW_DATABASE_USERNAME }}
-          WRITE_NOW_DATABASE_PASSWORD: ${{ secrets.WRITE_NOW_DATABASE_PASSWORD }}
-          WRITE_NOW_JWT_ISSUER: ${{ secrets.WRITE_NOW_JWT_ISSUER }}
-          WRITE_NOW_JWT_SECRET: ${{ secrets.WRITE_NOW_JWT_SECRET }}
+          WRITE_NOW_DATABASE_YML: ${{ secrets.WRITE_NOW_DATABASE_YML }}
+          WRITE_NOW_YML: ${{ secrets.WRITE_NOW_YML }}
       - name: Execute remote commands
         run: |
           ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "sudo sh /deploy/test.sh"
