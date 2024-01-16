@@ -45,7 +45,7 @@ jobs:
           mkdir -p ~/.ssh
           ssh-keyscan -T 240 -p 6666 ${{ secrets.WRITE_NOW_SERVER_IP }} >> ~/.ssh/known_hosts
       - name: SCP transfer
-        run: scp -P 6666 *.jar root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
+        run: scp -P 6666 *.jar root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
       - name: Create .env file And Transfer
         run: |
           echo "PRODUCT_DATABASE_URL=$WRITE_NOW_DATABASE_URL" >> .env
@@ -53,13 +53,13 @@ jobs:
           echo "PRODUCT_DATABASE_PASSWORD=$WRITE_NOW_DATABASE_PASSWORD" >> .env
           echo "export JWT_ISSUER=$WRITE_NOW_JWT_ISSUER" >> .env
           echo "export JWT_SECRET_KEY=$WRITE_NOW_JWT_SECRET" >> .env
-          scp -P 6666 .env root@${{secrets.WRITE_NOW_SERVER_IP}}:/deploy
+          scp -P 6666 .env root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
         env:
-          WRITE_NOW_DATABASE_URL: ${{secrets.WIRTE_NOW_DATABASE_URL}}
-          WRITE_NOW_DATABASE_USERNAME: ${{secrets.WIRTE_NOW_DATABASE_USERNAME}}
-          WRITE_NOW_DATABASE_PASSWORD: ${{secrets.WIRTE_NOW_DATABASE_PASSWORD}}
-          WRITE_NOW_JWT_ISSUER: ${{secrets.WIRTE_NOW_JWT_ISSUER}}
-          WRITE_NOW_JWT_SECRET: ${{secrets.WIRTE_NOW_JWT_SECRET}}
+          WRITE_NOW_DATABASE_URL: ${{ secrets.WIRTE_NOW_DATABASE_URL }}
+          WRITE_NOW_DATABASE_USERNAME: ${{ secrets.WIRTE_NOW_DATABASE_USERNAME }}
+          WRITE_NOW_DATABASE_PASSWORD: ${{ secrets.WIRTE_NOW_DATABASE_PASSWORD }}
+          WRITE_NOW_JWT_ISSUER: ${{ secrets.WIRTE_NOW_JWT_ISSUER }}
+          WRITE_NOW_JWT_SECRET: ${{ secrets.WIRTE_NOW_JWT_SECRET }}
       - name: Execute remote commands
         run: |
           ssh -p 6666 root@${{ secrets.WRITE_NOW_SERVER_IP }} "sudo sh /deploy/test.sh"
