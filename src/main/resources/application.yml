@@ -1,7 +1,18 @@
 spring:
-  profiles:
-    include:
-      - database
+  datasource:
+    url: jdbc:mysql://localhost:3306/write-now?charset=UTF-8&serverTimezone=Asia/Seoul
+    username: root
+    password: dustn@@0317
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties.hibernate:
+      show_sql: true
+      format_sql: true
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 logging:
   level:
     root: ERROR
@@ -11,20 +22,6 @@ logging:
 
 jwt:
   issuer: test@test.com
-  secret_key: MFswDQYJKoZIhvcNAQEBBQADSgAwRwJAcFvaLSkWsphMsoBYkSGImf
+  secret_key: aziBwQMoAxTLMmLkvIslUfQdTnrRyOBAvBxyOxQjhtcSSpUeyBkVOHKCgsPS
 
 frontDomain: http://localhost:3000
----
-spring:
-  config:
-    activate:
-      on-profile: product
-logging:
-  level:
-    root: error
-    org.springframework.security: DEBUG
-    org.springframework.web.client: DEBUG
-    org.hibernate.SQL: ERROR
-jwt:
-  issuer: { JWT_ISSUER }
-  secret_key: { JWT_SECRET_KEY }

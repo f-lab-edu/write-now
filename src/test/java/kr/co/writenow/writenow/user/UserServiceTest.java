@@ -1,8 +1,5 @@
 package kr.co.writenow.writenow.user;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import jakarta.transaction.Transactional;
 import kr.co.writenow.writenow.domain.user.Gender;
 import kr.co.writenow.writenow.domain.user.User;
@@ -22,9 +19,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.TestPropertySources;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
-@TestPropertySources(value = {@TestPropertySource("classpath:application.yml"),
-    @TestPropertySource("classpath:application-database.yml")})
+@TestPropertySources(value = {@TestPropertySource("classpath:application.yml")})
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 // 내장 데이터베이스를 쓰지 않기 위한 설정
 @Transactional
