@@ -31,6 +31,8 @@ public class UserController {
                 .body(GlobalExceptionHandler.validateErrorsHandler(errors));
         }
 
+        userService.register(request);
+
         return ResponseEntity
             .status(HttpStatus.CREATED)
             .build();
