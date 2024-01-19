@@ -15,7 +15,7 @@ spring:
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
 logging:
   level:
-    root: ERROR
+    root: INFO
     org.springframework.security: DEBUG
     org.springframework.web.client: DEBUG
     org.hibernate.SQL: ERROR
