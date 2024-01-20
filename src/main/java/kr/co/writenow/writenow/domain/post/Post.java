@@ -3,17 +3,16 @@ package kr.co.writenow.writenow.domain.post;
 import jakarta.persistence.*;
 import kr.co.writenow.writenow.domain.common.BaseEntity;
 import kr.co.writenow.writenow.domain.user.User;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "POST")
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Post extends BaseEntity {
 
     @Id
@@ -34,14 +33,52 @@ public class Post extends BaseEntity {
     @Column(name = "CATEGORY_CODE")
     private String categoryCode;
 
-    @OneToMany
-    @JoinColumn(name = "IMG_NO")
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
     private List<PostImage> postImages = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post")
-    private Set<PostTag> tags;
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY
+    )
+    private Set<PostTag> tags = new HashSet<>();
 
 
-    @OneToMany(mappedBy = "post")
-    private List<LikePost> likePosts;
+    @OneToMany(
+            mappedBy = "post",
+            cascade = CascadeType.ALL,
+            fetch = FetchType.LAZY)
+    private List<LikePost> likePosts = new ArrayList<>();
+
+    public Post(User user, String content, String categoryCode) {
+        this.writer = user;
+        this.content = content;
+        this.categoryCode = categoryCode;
+        this.likeCount = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Post post = (Post) o;
+        return Objects.equals(postNo, post.postNo) && Objects.equals(writer, post.writer);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(postNo, writer);
+    }
+
+    public void addPostTags(Set<PostTag> tags) {
+        this.tags.addAll(tags);
+    }
+
+    public void addPostImages(List<PostImage> images) {
+        this.postImages.addAll(images);
+    }
 }

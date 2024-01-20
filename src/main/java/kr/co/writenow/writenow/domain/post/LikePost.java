@@ -2,9 +2,12 @@ package kr.co.writenow.writenow.domain.post;
 
 import jakarta.persistence.*;
 import kr.co.writenow.writenow.domain.user.User;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "LIKE_POST")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class LikePost {
 
     @Id
