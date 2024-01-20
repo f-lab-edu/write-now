@@ -1,11 +1,11 @@
 package kr.co.writenow.writenow.service.post;
 
+import jakarta.validation.Valid;
 import kr.co.writenow.writenow.common.MultipartUtil;
 import kr.co.writenow.writenow.common.file.FileService;
 import kr.co.writenow.writenow.domain.post.Post;
 import kr.co.writenow.writenow.domain.user.User;
 import kr.co.writenow.writenow.repository.post.PostRepository;
-import kr.co.writenow.writenow.repository.user.UserRepository;
 import kr.co.writenow.writenow.service.post.dto.PostResponse;
 import kr.co.writenow.writenow.service.post.dto.PostWriteRequest;
 import kr.co.writenow.writenow.service.user.UserService;
@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -24,10 +25,10 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
+@Validated
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
     private final PostTagService postTagService;
     private final PostImageService postImageService;
     private final MultipartUtil multipartUtil;
@@ -36,7 +37,7 @@ public class PostService {
 
     private static final String S3_POST_DIR = "post";
 
-    public Object writePost(String userId, PostWriteRequest request) {
+    public PostResponse writePost(@Valid PostWriteRequest request, String userId) {
         User user = userService.fetchUserByUserId(userId);
         Post post = new Post(user, request.getContent(), request.getCategoryCode());
         post = postRepository.save(post);

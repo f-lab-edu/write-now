@@ -2,6 +2,7 @@ package kr.co.writenow.writenow.controller.post;
 
 import kr.co.writenow.writenow.common.MultipartUtil;
 import kr.co.writenow.writenow.service.post.PostService;
+import kr.co.writenow.writenow.service.post.dto.PostResponse;
 import kr.co.writenow.writenow.service.post.dto.PostWriteRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,9 @@ public class PostController {
     private final MultipartUtil multipartUtil;
 
     @PostMapping("/create/{userId}")
-    public ResponseEntity<Object> writePost(MultipartHttpServletRequest servletRequest, @PathVariable("userId") String userId){
+    public ResponseEntity<PostResponse> writePost(MultipartHttpServletRequest servletRequest, @PathVariable("userId") String userId) {
         PostWriteRequest request = multipartUtil.convertTo(PostWriteRequest.class, servletRequest);
         request.setFiles(servletRequest.getFiles("files"));
-        return ResponseEntity.ok(postService.writePost(userId, request));
+        return ResponseEntity.ok(postService.writePost(request, userId));
     }
 }
