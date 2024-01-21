@@ -1,8 +1,5 @@
 package kr.co.writenow.writenow.service.user;
 
-import java.time.Duration;
-import java.util.Collections;
-import java.util.Optional;
 import kr.co.writenow.writenow.config.security.jwt.JwtTokenProvider;
 import kr.co.writenow.writenow.domain.user.Role;
 import kr.co.writenow.writenow.domain.user.User;
@@ -14,22 +11,23 @@ import kr.co.writenow.writenow.service.user.dto.LoginRequest;
 import kr.co.writenow.writenow.service.user.dto.LoginResponse;
 import kr.co.writenow.writenow.service.user.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
-import org.springframework.security.authentication.LockedException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.authentication.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Duration;
+import java.util.Collections;
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
@@ -48,15 +46,15 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         User user = User.builder()
-            .email(request.getEmail())
-            .nickname(request.getNickname())
-            .userId(request.getUserId())
-            .password(encodedPassword)
-            .gender(request.getGender())
-            .isLocked(false)
-            .loginFailCount(0)
-            .roles(Collections.singleton(new Role()))
-            .build();
+                .email(request.getEmail())
+                .nickname(request.getNickname())
+                .userId(request.getUserId())
+                .password(encodedPassword)
+                .gender(request.getGender())
+                .isLocked(false)
+                .loginFailCount(0)
+                .roles(Collections.singleton(new Role()))
+                .build();
 
         userRepository.save(user);
     }
@@ -91,7 +89,7 @@ public class UserService {
     public Authentication authenticate(String userId, String password) {
         try {
             return authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userId, password));
+                    new UsernamePasswordAuthenticationToken(userId, password));
         } catch (InternalAuthenticationServiceException e) {
             throw new UserNotFoundException(HttpStatus.BAD_REQUEST, "아이디와 일치하는 회원이 없습니다.");
         } catch (DisabledException e) {
@@ -122,5 +120,12 @@ public class UserService {
 
     public void logout() {
         SecurityContextHolder.clearContext();
+    }
+
+    public User fetchUserByUserId(String userId) {
+        return userRepository.findByUserId(userId).orElseThrow(() -> {
+            log.warn("{} 아이디로 조회된 회원정보가 없습니다.", userId);
+            return new UserNotFoundException(HttpStatus.BAD_REQUEST, "회원정보가 올바르지 않습니다.");
+        });
     }
 }

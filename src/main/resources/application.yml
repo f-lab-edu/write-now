@@ -13,6 +13,12 @@ spring:
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
         implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 1MB
+      max-request-size: 10MB
+
 logging:
   level:
     root: INFO
@@ -25,3 +31,13 @@ jwt:
   secret_key: aziBwQMoAxTLMmLkvIslUfQdTnrRyOBAvBxyOxQjhtcSSpUeyBkVOHKCgsPS
 
 frontDomain: http://localhost:3000
+
+naver:
+  cloud:
+    accessKey: ${NAVER_ACCESS_KEY}
+    secretKey: ${NAVER_SECRET_KEY}
+    bucketName: ${NAVER_BUCKET_NAME}
+
+file:
+  rootDir: /opt
+  baseDir: /write-now
