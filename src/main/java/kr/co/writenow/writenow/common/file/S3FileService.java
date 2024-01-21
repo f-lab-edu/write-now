@@ -16,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -65,13 +64,8 @@ public class S3FileService implements FileService {
         } catch (InterruptedException e) {
             log.error("파일 업로드가 종료되지 않습니다. : {}", e.getMessage());
             throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "파일을 업로드 하는데 문제가 발생했습니다.");
-        }
-    }
-
-    @Override
-    public void upload(List<File> files, String fileKey) {
-        for (File file : files) {
-            upload(file, fileKey);
+        }finally {
+            FileUtil.delete(file);
         }
     }
 }

@@ -7,5 +7,9 @@ public interface FileService {
 
     void upload(File file, String fileKey);
 
-    void upload(List<File> files, String fileKey);
+    default void upload(List<File> files, String fileKey){
+        for (File file : files) {
+            this.upload(file, fileKey);
+        }
+    }
 }
