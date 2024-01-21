@@ -25,7 +25,10 @@ import java.util.Set;
 @Slf4j
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
-    public <T> void errorLogging(Class<T> clazz, String message){
+    public <T> void errorLogging(Class<T> clazz, StackTraceElement[] stackTraces,  String message){
+        for (StackTraceElement stackTrace : stackTraces) {
+            log.error(stackTrace.toString());
+        }
         log.error(String.format("Error Class: %s, message: %s", clazz.getName(), message));
     }
 
@@ -40,7 +43,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<?> customExceptionHandler(CustomException e){
-        errorLogging(e.getClass(), e.getMessage());
+        errorLogging(e.getClass(), e.getStackTrace(), e.getMessage());
         return ResponseEntity
                 .status(e.getStatus())
                 .body(new ExceptionResponse(e.getStatus().value(), e.getMessage()));
@@ -48,7 +51,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(InvalidParameterException.class)
     public ResponseEntity<?> invalidParameterExceptionHandler(InvalidParameterException e){
-        errorLogging(e.getClass(), e.getMessage());
+        errorLogging(e.getClass(), e.getStackTrace(), e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(new ExceptionResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage()));
@@ -56,7 +59,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<?> runtimeExceptionHandler(RuntimeException e){
-        errorLogging(e.getClass(), e.getMessage());
+        errorLogging(e.getClass(), e.getStackTrace(), e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ExceptionResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), e.getMessage()));
@@ -64,7 +67,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException e){
-        errorLogging(e.getClass(), e.getMessage());
+        errorLogging(e.getClass(), e.getStackTrace(), e.getMessage());
         Map<String, String> errors = new HashMap<>();
         Set<ConstraintViolation<?>> constraintViolations = e.getConstraintViolations();
         constraintViolations.forEach(cv-> {
