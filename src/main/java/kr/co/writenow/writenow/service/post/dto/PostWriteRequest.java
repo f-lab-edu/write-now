@@ -1,5 +1,6 @@
 package kr.co.writenow.writenow.service.post.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class PostWriteRequest {
 
-    @NotEmpty(message = "내용을 적어주세요.")
+    @NotBlank(message = "내용을 적어주세요.")
     @Size(max = 300, message = "글은 300자 이하로 작성해야 합니다.")
     private String content;
 

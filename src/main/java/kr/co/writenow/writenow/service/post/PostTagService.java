@@ -17,8 +17,8 @@ import java.util.*;
 @Transactional
 public class PostTagService {
 
-    private TagRepository tagRepository;
-    private PostTagRepository postTagRepository;
+    private final TagRepository tagRepository;
+    private final PostTagRepository postTagRepository;
 
     public Set<PostTag> makePostTagSet(Post post, List<String> tagValues){
         if(ObjectUtils.isEmpty(tagValues)){

@@ -2,13 +2,16 @@ package kr.co.writenow.writenow.domain.tag;
 
 import jakarta.persistence.*;
 import kr.co.writenow.writenow.domain.common.BaseEntity;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.*;
 
 @Getter
 @Entity
 @Table(name = "TAG")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag extends BaseEntity {
 
     @Id
@@ -21,18 +24,6 @@ public class Tag extends BaseEntity {
 
     public Tag(String content){
         this.content = content;
-    }
-
-    public static Set<Tag> makeTagSet(String[] tagValues){
-        if(tagValues.length == 0){
-            return Collections.emptySet();
-        }
-
-        Set<Tag> tags = new HashSet<>();
-        for(String value: tagValues){
-            tags.add(new Tag(value));
-        }
-        return tags;
     }
 
     @Override

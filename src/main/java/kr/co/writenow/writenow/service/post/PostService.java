@@ -1,8 +1,8 @@
 package kr.co.writenow.writenow.service.post;
 
 import jakarta.validation.Valid;
-import kr.co.writenow.writenow.common.MultipartUtil;
 import kr.co.writenow.writenow.common.file.FileService;
+import kr.co.writenow.writenow.common.file.FileUtil;
 import kr.co.writenow.writenow.domain.post.Post;
 import kr.co.writenow.writenow.domain.user.User;
 import kr.co.writenow.writenow.repository.post.PostRepository;
@@ -31,7 +31,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostTagService postTagService;
     private final PostImageService postImageService;
-    private final MultipartUtil multipartUtil;
+    private final FileUtil fileUtil;
     private final FileService fileService;
     private final UserService userService;
 
@@ -55,7 +55,7 @@ public class PostService {
     private List<File> makeFiles(List<MultipartFile> multipartFiles) {
         List<File> files = new ArrayList<>();
         for (MultipartFile file : multipartFiles) {
-            Optional<File> maybeFile = multipartUtil.makeFile(file);
+            Optional<File> maybeFile = fileUtil.makeFile(file);
             maybeFile.ifPresent(files::add);
         }
         return files;
