@@ -1,16 +1,16 @@
 package kr.co.writenow.writenow.controller.post;
 
-import kr.co.writenow.writenow.common.MultipartUtil;
+import kr.co.writenow.writenow.exception.handler.GlobalExceptionHandler;
 import kr.co.writenow.writenow.service.post.PostService;
-import kr.co.writenow.writenow.service.post.dto.PostResponse;
 import kr.co.writenow.writenow.service.post.dto.PostWriteRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,12 +18,13 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 public class PostController {
 
     private final PostService postService;
-    private final MultipartUtil multipartUtil;
 
-    @PostMapping("/create/{userId}")
-    public ResponseEntity<PostResponse> writePost(MultipartHttpServletRequest servletRequest, @PathVariable("userId") String userId) {
-        PostWriteRequest request = multipartUtil.convertTo(PostWriteRequest.class, servletRequest);
-        request.setFiles(servletRequest.getFiles("files"));
+    @PostMapping("/{userId}")
+    public ResponseEntity<Object> writePost(@RequestParam(value = "files") List<MultipartFile> files, @RequestPart(value = "data") PostWriteRequest request, @PathVariable("userId") String userId, Errors errors) {
+        if(errors.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(GlobalExceptionHandler.validateErrorsHandler(errors));
+        }
+        request.setFiles(files);
         return ResponseEntity.ok(postService.writePost(request, userId));
     }
 }
