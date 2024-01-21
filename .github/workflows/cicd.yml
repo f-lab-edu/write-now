@@ -46,6 +46,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -T 240 -p 6666 ${{ secrets.WRITE_NOW_SERVER_IP }} >> ~/.ssh/known_hosts
+          cat ~/.ssh/known_hosts
       - name: SCP transfer
         run: scp -P 6666 *.jar root@${{ secrets.WRITE_NOW_SERVER_IP }}:/deploy
       - name: Create .env file And Transfer
