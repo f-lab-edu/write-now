@@ -48,4 +48,9 @@ public class UserController {
         return ResponseEntity.ok(userService.follow(request));
     }
 
+    @DeleteMapping("/follow")
+    public void followCancel(@RequestBody FollowRequest request){
+        userService.followCancel(request);
+    }
+
 }

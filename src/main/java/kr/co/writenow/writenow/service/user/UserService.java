@@ -146,4 +146,10 @@ public class UserService {
 
         return new FollowResponse(follow.getFollower().getUserId(), follow.getFollowee().getUserId());
     }
+
+    public void followCancel(FollowRequest request) {
+        User follower = fetchUserByUserId(request.followerUserId());
+        User followee = fetchUserByUserId(request.followeeUserId());
+        followRepository.deleteByFollowerAndFollowee(follower, followee);
+    }
 }
