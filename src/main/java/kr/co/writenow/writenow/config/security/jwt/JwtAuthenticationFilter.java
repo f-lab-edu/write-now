@@ -4,16 +4,16 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
 
 
 @RequiredArgsConstructor
@@ -44,16 +44,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         final String userId = provider.getUserId(jwt);
 
-        if (StringUtils.hasText(userId)
-            && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (StringUtils.hasText(userId) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
             if (provider.isValidToken(jwt, userDetails.getUsername())) {
-                SecurityContext context = SecurityContextHolder.createEmptyContext();
                 UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                     userDetails, null, userDetails.getAuthorities());
                 token.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                context.setAuthentication(token);
-                SecurityContextHolder.setContext(context);
+                SecurityContextHolder.getContext().setAuthentication(token);
             }
         }
         filterChain.doFilter(request, response);
