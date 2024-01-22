@@ -3,18 +3,12 @@ package kr.co.writenow.writenow.controller.user;
 import jakarta.validation.Valid;
 import kr.co.writenow.writenow.exception.handler.GlobalExceptionHandler;
 import kr.co.writenow.writenow.service.user.UserService;
-import kr.co.writenow.writenow.service.user.dto.LoginRequest;
-import kr.co.writenow.writenow.service.user.dto.LoginResponse;
-import kr.co.writenow.writenow.service.user.dto.RegisterRequest;
+import kr.co.writenow.writenow.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -47,6 +41,11 @@ public class UserController {
     @GetMapping("/logout")
     public void logout() {
         userService.logout();
+    }
+
+    @PostMapping("/follow")
+    public ResponseEntity<FollowResponse> follow(@RequestBody FollowRequest request){
+        return ResponseEntity.ok(userService.follow(request));
     }
 
 }
