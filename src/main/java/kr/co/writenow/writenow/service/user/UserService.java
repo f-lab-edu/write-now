@@ -1,15 +1,16 @@
 package kr.co.writenow.writenow.service.user;
 
 import kr.co.writenow.writenow.config.security.jwt.JwtTokenProvider;
+import kr.co.writenow.writenow.domain.user.Follow;
 import kr.co.writenow.writenow.domain.user.Role;
 import kr.co.writenow.writenow.domain.user.User;
+import kr.co.writenow.writenow.exception.CustomException;
 import kr.co.writenow.writenow.exception.user.InvalidUserException;
 import kr.co.writenow.writenow.exception.user.UserNotFoundException;
 import kr.co.writenow.writenow.exception.user.UserRegisterException;
+import kr.co.writenow.writenow.repository.user.FollowRepository;
 import kr.co.writenow.writenow.repository.user.UserRepository;
-import kr.co.writenow.writenow.service.user.dto.LoginRequest;
-import kr.co.writenow.writenow.service.user.dto.LoginResponse;
-import kr.co.writenow.writenow.service.user.dto.RegisterRequest;
+import kr.co.writenow.writenow.service.user.dto.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider tokenProvider;
+    private final FollowRepository followRepository;
 
     /**
      * @param request email, nickname, userId, password, gender
@@ -127,5 +129,27 @@ public class UserService {
             log.warn("{} 아이디로 조회된 회원정보가 없습니다.", userId);
             return new UserNotFoundException(HttpStatus.BAD_REQUEST, "회원정보가 올바르지 않습니다.");
         });
+    }
+
+    public FollowResponse follow(FollowRequest request) {
+        User follower = fetchUserByUserId(request.followerUserId());
+        User followee = fetchUserByUserId(request.followeeUserId());
+
+
+        Optional<Follow> maybeFollow = followRepository.findByFollowerAndFollowee(follower, followee);
+        if(maybeFollow.isPresent()){
+            throw new CustomException(HttpStatus.BAD_REQUEST, "이미 팔로우 하고 있는 회원입니다.");
+        }
+
+        Follow follow = new Follow(follower, followee);
+        follow = followRepository.save(follow);
+
+        return new FollowResponse(follow.getFollower().getUserId(), follow.getFollowee().getUserId());
+    }
+
+    public void followCancel(FollowRequest request) {
+        User follower = fetchUserByUserId(request.followerUserId());
+        User followee = fetchUserByUserId(request.followeeUserId());
+        followRepository.deleteByFollowerAndFollowee(follower, followee);
     }
 }

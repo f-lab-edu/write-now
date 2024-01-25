@@ -1,7 +1,6 @@
 package kr.co.writenow.writenow.config.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Collections;
 import kr.co.writenow.writenow.config.security.jwt.JwtAuthenticationFilter;
 import kr.co.writenow.writenow.config.security.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
@@ -41,10 +41,10 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
         http.authorizeHttpRequests(auth -> {
                 auth.requestMatchers("/user/login", "/user/register").permitAll()
                     .requestMatchers("/post/**").hasAnyRole("USER")
-                    .requestMatchers("/**").permitAll()
                     .anyRequest().authenticated();
             })
             .cors(corsConfig -> corsConfig.configurationSource(request -> {
@@ -76,7 +76,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    public OncePerRequestFilter authenticationFilter(JwtTokenProvider tokenProvider) {
+    public JwtAuthenticationFilter authenticationFilter(JwtTokenProvider tokenProvider) {
         return new JwtAuthenticationFilter(tokenProvider, userDetailsService);
     }
 
