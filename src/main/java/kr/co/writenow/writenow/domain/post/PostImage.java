@@ -3,11 +3,13 @@ package kr.co.writenow.writenow.domain.post;
 import jakarta.persistence.*;
 import kr.co.writenow.writenow.domain.common.BaseEntity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "POST_IMAGE")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class PostImage extends BaseEntity {
 
     @Id
