@@ -32,7 +32,7 @@ public class PostRepositoryCustom {
         .leftJoin(postTag).on(post.postNo.eq(postTag.post.postNo))
         .leftJoin(tag).on(postTag.tag.tagNo.eq(tag.tagNo))
         .where(
-            largerThan(lastPostNo),
+            lowerThan(lastPostNo),
             post.writer.userId.eq(userId).or(
             post.writer.userNo.in(
                 JPAExpressions.select(follow.followee.userNo)
@@ -41,7 +41,7 @@ public class PostRepositoryCustom {
             )
         ))
         .limit(pageable.getPageSize())
-        .orderBy(post.createdDatetime.desc())
+        .orderBy(post.postNo.desc())
         .transform(
             groupBy(post.postNo).list(
                 Projections.constructor(FeedProjection.class, post.postNo, post.writer.userId,
@@ -50,7 +50,7 @@ public class PostRepositoryCustom {
         );
   }
 
-  private Predicate largerThan(Long lastPostNo) {
+  private Predicate lowerThan(Long lastPostNo) {
     return lastPostNo != null ? post.postNo.lt(lastPostNo) : null;
   }
 
