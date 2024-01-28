@@ -28,10 +28,9 @@ public class PostServiceTest {
 
     @Test
     void manytomanyTest(){
-        //postRepository.save(new Post());
-        Optional<Post> post = postRepository.findById(1L);
-        if(post.isPresent()){
-            List<LikePost> likePosts = post.get().getLikePosts();
-        }
+        Optional<Post> maybePost = postRepository.findById(1L);
+        maybePost.ifPresent(post-> {
+            List<LikePost> likePosts = post.getLikePosts();
+        });
     }
 }
