@@ -26,7 +26,9 @@ public class FeedProjection {
     this.userNickname = userNickname;
     this.content = content;
     this.likeCount = likeCount;
-    this.writeDateTime = DateUtil.datetimeConvertToString(writeDateTime);
+    DateUtil.datetimeConvertToString(writeDateTime).ifPresent(datetime-> {
+      this.writeDateTime = datetime;
+    });
     this.imagePaths = imagePaths;
     this.tags = tags;
   }
