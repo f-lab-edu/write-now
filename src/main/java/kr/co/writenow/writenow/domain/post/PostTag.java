@@ -3,10 +3,11 @@ package kr.co.writenow.writenow.domain.post;
 import jakarta.persistence.*;
 import kr.co.writenow.writenow.domain.tag.Tag;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.Objects;
-
+@Getter
 @Entity
 @Table(name = "POST_TAG")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

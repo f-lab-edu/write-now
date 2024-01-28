@@ -37,3 +37,6 @@ out/
 .vscode/
 
 /src/main/resources/application-product.yml
+
+### QUERY DSL
+/src/main/generated
