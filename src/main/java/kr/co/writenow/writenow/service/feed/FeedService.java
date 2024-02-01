@@ -9,6 +9,7 @@ import kr.co.writenow.writenow.domain.user.User;
 import kr.co.writenow.writenow.repository.feed.FeedRepository;
 import kr.co.writenow.writenow.repository.user.FollowRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,7 @@ public class FeedService {
   private final FeedRepository feedRepository;
   private final FollowRepository followRepository;
 
+  @Async
   public void save(Post post, User writer){
     //1. 글쓴이를 팔로우 하고 있는 전체 유저 조회
     List<Follow> follows = followRepository.findByFollowee(writer);
