@@ -59,6 +59,7 @@ public class PostService {
 
         // 글 작성 이벤트 날리기
         jmsTemplate.convertAndSend("post", post.getPostNo());
+
         //feedService.save(post);
 
         return new PostResponse(post);
