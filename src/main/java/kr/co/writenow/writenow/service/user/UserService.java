@@ -4,9 +4,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import kr.co.writenow.writenow.config.security.jwt.JwtTokenProvider;
-import kr.co.writenow.writenow.domain.feed.Feed;
 import kr.co.writenow.writenow.domain.user.Follow;
 import kr.co.writenow.writenow.domain.user.Role;
 import kr.co.writenow.writenow.domain.user.User;
@@ -14,9 +12,7 @@ import kr.co.writenow.writenow.exception.CustomException;
 import kr.co.writenow.writenow.exception.user.InvalidUserException;
 import kr.co.writenow.writenow.exception.user.UserNotFoundException;
 import kr.co.writenow.writenow.exception.user.UserRegisterException;
-import kr.co.writenow.writenow.repository.feed.FeedRepository;
 import kr.co.writenow.writenow.repository.feed.FeedRepositoryCustom;
-import kr.co.writenow.writenow.repository.post.PostRepositoryCustom;
 import kr.co.writenow.writenow.repository.post.projection.FeedProjection;
 import kr.co.writenow.writenow.repository.user.FollowRepository;
 import kr.co.writenow.writenow.repository.user.UserRepository;
@@ -53,7 +49,6 @@ public class UserService {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider tokenProvider;
   private final FollowRepository followRepository;
-  private final PostRepositoryCustom postRepositoryCustom;
   private final FeedRepositoryCustom feedRepositoryCustom;
 
   /**
