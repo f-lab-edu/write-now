@@ -16,6 +16,7 @@ import kr.co.writenow.writenow.service.post.dto.PostWriteRequest;
 import kr.co.writenow.writenow.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
@@ -36,7 +37,7 @@ public class PostService {
     private final FileService fileService;
     private final UserService userService;
     private final FeedService feedService;
-
+    private final JmsTemplate jmsTemplate;
     private static final String S3_POST_DIR = "post";
 
     public PostResponse writePost(@Valid PostWriteRequest request, String userId) {
@@ -56,8 +57,9 @@ public class PostService {
         //글의 태그, 이미지 저장
         post.addPostTags(postTagService.makePostTagSet(post, request.getTagValues()));
 
-        // 피드 생성
-        feedService.save(post, user);
+        // 글 작성 이벤트 날리기
+        jmsTemplate.convertAndSend("post", post.getPostNo());
+        //feedService.save(post);
 
         return new PostResponse(post);
     }
