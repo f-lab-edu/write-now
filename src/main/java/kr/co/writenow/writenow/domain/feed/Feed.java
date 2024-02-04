@@ -22,6 +22,7 @@ public class Feed extends BaseEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "FEED_NO")
   private Long feedNo;
 
   @Column(name = "FEED_USER_NO")
