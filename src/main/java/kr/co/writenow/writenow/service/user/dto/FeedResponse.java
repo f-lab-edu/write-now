@@ -2,6 +2,7 @@ package kr.co.writenow.writenow.service.user.dto;
 
 import java.util.List;
 import java.util.Set;
+import kr.co.writenow.writenow.domain.feed.Feed;
 import kr.co.writenow.writenow.repository.post.projection.FeedProjection;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FeedResponse {
 
-  private Long postNo;
+  private Long feedNo;
   private String userId;
   private String userNickname;
   private String content;
@@ -22,7 +23,7 @@ public class FeedResponse {
   private Set<String> tags;
 
   public FeedResponse(FeedProjection projection) {
-    this.postNo = projection.getPostNo();
+    this.feedNo = projection.getFeedNo();
     this.userId = projection.getUserId();
     this.userNickname = projection.getUserNickname();
     this.content = projection.getContent();

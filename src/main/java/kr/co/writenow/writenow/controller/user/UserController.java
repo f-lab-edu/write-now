@@ -70,9 +70,9 @@ public class UserController {
 
   @GetMapping("/feed/{userId}")
   public ResponseEntity<List<FeedResponse>> fetchFeed(@PathVariable("userId") String userId,
-      @RequestParam(value = "lastPostNo", required = false) Long lastPostNo,
+      @RequestParam(value = "lastFeedNo", required = false) Long lastFeedNo,
       @PageableDefault Pageable pageable) {
-    return ResponseEntity.ok(userService.fetchFeed(lastPostNo, userId, pageable));
+    return ResponseEntity.ok(userService.fetchFeed(lastFeedNo, userId, pageable));
   }
 
 }

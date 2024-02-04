@@ -9,27 +9,25 @@ import lombok.Getter;
 @Getter
 public class FeedProjection {
 
-  private Long postNo;
-  private String userId;
-  private String userNickname;
-  private String content;
-  private Integer likeCount;
-  private String writeDateTime;
-  private List<String> imagePaths;
-  private Set<String> tags;
+    private Long feedNo;
+    private Long postNo;
+    private String userId;
+    private String userNickname;
+    private String content;
+    private Integer likeCount;
+    private String writeDateTime;
+    private List<String> imagePaths;
+    private Set<String> tags;
 
+    public FeedProjection(Long feedNo, Long postNo, String writerId, String writerNickname, String content,
+        int likeCount, String writeDateTime) {
+        this.feedNo = feedNo;
+        this.postNo = postNo;
+        this.userId = writerId;
+        this.userNickname = writerNickname;
+        this.content = content;
+        this.likeCount = likeCount;
+        this.writeDateTime = writeDateTime;
+    }
 
-  public FeedProjection(Long postNo, String userId, String userNickname, String content, Integer likeCount,
-      LocalDateTime writeDateTime, List<String> imagePaths, Set<String> tags) {
-    this.postNo = postNo;
-    this.userId = userId;
-    this.userNickname = userNickname;
-    this.content = content;
-    this.likeCount = likeCount;
-    DateUtil.datetimeConvertToString(writeDateTime).ifPresent(datetime-> {
-      this.writeDateTime = datetime;
-    });
-    this.imagePaths = imagePaths;
-    this.tags = tags;
-  }
 }

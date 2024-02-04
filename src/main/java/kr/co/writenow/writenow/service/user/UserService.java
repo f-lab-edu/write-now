@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import kr.co.writenow.writenow.config.security.jwt.JwtTokenProvider;
+import kr.co.writenow.writenow.domain.feed.Feed;
 import kr.co.writenow.writenow.domain.user.Follow;
 import kr.co.writenow.writenow.domain.user.Role;
 import kr.co.writenow.writenow.domain.user.User;
@@ -13,6 +14,8 @@ import kr.co.writenow.writenow.exception.CustomException;
 import kr.co.writenow.writenow.exception.user.InvalidUserException;
 import kr.co.writenow.writenow.exception.user.UserNotFoundException;
 import kr.co.writenow.writenow.exception.user.UserRegisterException;
+import kr.co.writenow.writenow.repository.feed.FeedRepository;
+import kr.co.writenow.writenow.repository.feed.FeedRepositoryCustom;
 import kr.co.writenow.writenow.repository.post.PostRepositoryCustom;
 import kr.co.writenow.writenow.repository.post.projection.FeedProjection;
 import kr.co.writenow.writenow.repository.user.FollowRepository;
@@ -51,6 +54,7 @@ public class UserService {
   private final JwtTokenProvider tokenProvider;
   private final FollowRepository followRepository;
   private final PostRepositoryCustom postRepositoryCustom;
+  private final FeedRepositoryCustom feedRepositoryCustom;
 
   /**
    * @param request email, nickname, userId, password, gender
@@ -167,9 +171,10 @@ public class UserService {
     followRepository.deleteByFollowerAndFollowee(follower, followee);
   }
 
-  public List<FeedResponse> fetchFeed(Long lastPostNo, String userId, Pageable pageable) {
-    List<FeedProjection> queryResults = postRepositoryCustom.fetchFeed(lastPostNo, userId,
-        pageable);
-    return queryResults.stream().map(FeedResponse::new).collect(Collectors.toList());
+  public List<FeedResponse> fetchFeed(Long lastFeedNo, String userId, Pageable pageable) {
+    User user = fetchUserByUserId(userId);
+    List<FeedProjection> queryResults = feedRepositoryCustom
+        .fetchByUserNo(user.getUserNo(), lastFeedNo, pageable.getPageSize());
+    return queryResults.stream().map(FeedResponse::new).toList();
   }
 }
