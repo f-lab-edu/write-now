@@ -10,7 +10,6 @@ import kr.co.writenow.writenow.common.file.FileUtil;
 import kr.co.writenow.writenow.domain.post.Post;
 import kr.co.writenow.writenow.domain.user.User;
 import kr.co.writenow.writenow.repository.post.PostRepository;
-import kr.co.writenow.writenow.service.feed.FeedService;
 import kr.co.writenow.writenow.service.post.dto.PostResponse;
 import kr.co.writenow.writenow.service.post.dto.PostWriteRequest;
 import kr.co.writenow.writenow.service.user.UserService;
@@ -36,7 +35,6 @@ public class PostService {
     private final FileUtil fileUtil;
     private final FileService fileService;
     private final UserService userService;
-    private final FeedService feedService;
     private final JmsTemplate jmsTemplate;
     private static final String S3_POST_DIR = "post";
 
@@ -59,8 +57,6 @@ public class PostService {
 
         // 글 작성 이벤트 날리기
         jmsTemplate.convertAndSend("post", post.getPostNo());
-
-        //feedService.save(post);
 
         return new PostResponse(post);
     }
