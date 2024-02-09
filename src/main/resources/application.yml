@@ -5,6 +5,10 @@ server:
     threads:
       min-spare: 30
 
+threadPool:
+  core-size: 70
+  max-size: 200
+  queue-size: 100
 
 spring:
   datasource:

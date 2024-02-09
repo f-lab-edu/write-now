@@ -2,9 +2,7 @@ package kr.co.writenow.writenow.service.user;
 
 import java.time.Duration;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import kr.co.writenow.writenow.config.security.jwt.JwtTokenProvider;
 import kr.co.writenow.writenow.domain.user.Follow;
 import kr.co.writenow.writenow.domain.user.Role;
@@ -13,11 +11,9 @@ import kr.co.writenow.writenow.exception.CustomException;
 import kr.co.writenow.writenow.exception.user.InvalidUserException;
 import kr.co.writenow.writenow.exception.user.UserNotFoundException;
 import kr.co.writenow.writenow.exception.user.UserRegisterException;
-import kr.co.writenow.writenow.repository.post.PostRepositoryCustom;
-import kr.co.writenow.writenow.repository.post.projection.FeedProjection;
+import kr.co.writenow.writenow.repository.feed.FeedRepositoryCustom;
 import kr.co.writenow.writenow.repository.user.FollowRepository;
 import kr.co.writenow.writenow.repository.user.UserRepository;
-import kr.co.writenow.writenow.service.user.dto.FeedResponse;
 import kr.co.writenow.writenow.service.user.dto.FollowRequest;
 import kr.co.writenow.writenow.service.user.dto.FollowResponse;
 import kr.co.writenow.writenow.service.user.dto.LoginRequest;
@@ -25,7 +21,6 @@ import kr.co.writenow.writenow.service.user.dto.LoginResponse;
 import kr.co.writenow.writenow.service.user.dto.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -50,7 +45,7 @@ public class UserService {
   private final AuthenticationManager authenticationManager;
   private final JwtTokenProvider tokenProvider;
   private final FollowRepository followRepository;
-  private final PostRepositoryCustom postRepositoryCustom;
+  private final FeedRepositoryCustom feedRepositoryCustom;
 
   /**
    * @param request email, nickname, userId, password, gender
@@ -167,9 +162,4 @@ public class UserService {
     followRepository.deleteByFollowerAndFollowee(follower, followee);
   }
 
-  public List<FeedResponse> fetchFeed(Long lastPostNo, String userId, Pageable pageable) {
-    List<FeedProjection> queryResults = postRepositoryCustom.fetchFeed(lastPostNo, userId,
-        pageable);
-    return queryResults.stream().map(FeedResponse::new).collect(Collectors.toList());
-  }
 }

@@ -1,5 +1,6 @@
 package kr.co.writenow.writenow.common.file;
 
+import java.nio.file.Files;
 import kr.co.writenow.writenow.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,9 +39,10 @@ public class FileUtil {
     }
 
     public static void delete(File file){
-        boolean isDeleted = file.delete();
-        if(isDeleted){
-            log.warn("filePath: {} , 파일이 정상적으로 삭제되지 않았습니다.", file.getAbsoluteFile());
+        try {
+            Files.delete(file.toPath());
+        }catch (IOException e){
+            log.warn("filePath: {}, message: {}, 파일이 정상적으로 삭제되지 않았습니다.", file.getAbsoluteFile(), e.getMessage());
         }
     }
 
